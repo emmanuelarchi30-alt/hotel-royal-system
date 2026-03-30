@@ -52,5 +52,14 @@
     "tipo": "penthouse",
     "dias": 4,
     "estado": "activo"
+  },
+  {
+    "id": 7,
+    "nombre": "jose antonio",
+    "edad": 27,
+    "habitacion": 5,
+    "tipo": "estandar",
+    "dias": 2,
+    "estado": "activo"
   }
 ]

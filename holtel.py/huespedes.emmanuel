@@ -112,7 +112,7 @@ def buscar(lista):
         print(f"Tipo: {h['tipo']}")
         print(f"Dias: {h['dias']}")
         print(f"Estado: {h['estado']}")
-        print(f"quejas: {h['quejas']}")
+    
 
 def actualizar(lista):
     print("\n-- Actualizar huesped --")
@@ -191,6 +191,7 @@ def menu():
 
 huespedes = cargar()
 
+
 while True:
     menu()
     opcion = input("Opcion: ").strip()
@@ -212,5 +213,5 @@ while True:
         print("Opcion no valida")
 
     input("\nEnter para continuar...")
-    
+
 

@@ -2,7 +2,7 @@ import json
 import os
 
 ARCHIVO = "Emmanuel"
-ARCHIVO_CSV = "HUESOEDES.CSV"
+ARCHIVO_CSV = "HUESPEDES.CSV"
 
 def cargar():
     if os.path.exists(ARCHIVO):

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "nombre": "emmanuel",
+    "edad": 17,
+    "habitacion": 45,
+    "tipo": "suite",
+    "dias": 24,
+    "estado": "activo"
+  },
+  {
+    "id": 2,
+    "nombre": "maria camila pacheco pacheco",
+    "edad": 19,
+    "habitacion": 598,
+    "tipo": "estandar",
+    "dias": 6,
+    "estado": "inactivo"
+  },
+  {
+    "id": 3,
+    "nombre": "mesi ronaldo",
+    "edad": 30,
+    "habitacion": 40,
+    "tipo": "penthouse",
+    "dias": 5,
+    "estado": "activo"
+  },
+  {
+    "id": 4,
+    "nombre": "pedro",
+    "edad": 35,
+    "habitacion": 56,
+    "tipo": "suite",
+    "dias": 7,
+    "estado": "activo"
+  },
+  {
+    "id": 5,
+    "nombre": "pedro pascal",
+    "edad": 67,
+    "habitacion": 67,
+    "tipo": "penthouse",
+    "dias": 10,
+    "estado": "activo"
+  },
+  {
+    "id": 6,
+    "nombre": "pepe gallo",
+    "edad": 20,
+    "habitacion": 23,
+    "tipo": "penthouse",
+    "dias": 4,
+    "estado": "activo"
+  }
+]

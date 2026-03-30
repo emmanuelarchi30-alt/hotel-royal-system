@@ -1,0 +1,216 @@
+import json
+import os
+
+ARCHIVO = "Emmanuel"
+ARCHIVO_CSV = "HUESOEDES.CSV"
+
+def cargar():
+    if os.path.exists(ARCHIVO):
+        try:
+            with open(ARCHIVO, "r") as f:
+                return json.load(f)
+        except:
+            return []
+    return []
+
+def guardar(lista):
+    with open(ARCHIVO, "w") as f:
+        json.dump(lista, f, indent=2)
+
+def exportar_csv(lista):
+    if not lista:
+        print("No hay huespedes para exportar")
+        return
+    with open(ARCHIVO_CSV, "W", newline="", encoding="utf-8") as  f:
+        campos = ["id", "nombre","edad", "habitacion", "tipo", "dias", "estado"]
+        writer = csv.Dictwriter(f,fieldnames=campos)
+        writer.writerheader()
+        writer.writerows(lista)
+    print(f"lista exportada {ARCHIVO_CSV}")
+    
+    
+def nuevo_huesped(lista):
+    print("\n-- Registrar huesped --")
+
+    nombre = input("Nombre: ").strip()
+    if not nombre:
+        print("El nombre no puede estar vacio")
+        return
+
+    try:
+        edad = int(input("Edad: "))
+    except:
+        print("Edad no valida")
+        return
+
+    try:
+        habitacion = int(input("Numero de habitacion: "))
+        ocupadas = [h["habitacion"] for h in lista if h["estado"] == "activo"]
+        if habitacion in ocupadas:
+            print("Esa habitacion ya esta ocupada")
+            return
+    except:
+        print("Habitacion no valida")
+        return
+
+    print("Tipo: 1) Estandar  2) Suite  3) Penthouse")
+    op = input("Opcion: ")
+    tipos = {"1": "estandar", "2": "suite", "3": "penthouse"}
+    tipo = tipos.get(op)
+    if not tipo:
+        print("Opcion no valida")
+        return
+
+    try:
+        dias = int(input("Dias de estadia: "))
+    except:
+        print("Dias no validos")
+        return
+
+    id_nuevo = max((h["id"] for h in lista), default=0) + 1
+
+    huesped = {
+        "id": id_nuevo,
+        "nombre": nombre,
+        "edad": edad,
+        "habitacion": habitacion,
+        "tipo": tipo,
+        "dias": dias,
+        "estado": "activo"
+    }
+
+    lista.append(huesped)
+    guardar(lista)
+    print(f"Huesped registrado con ID {id_nuevo}")
+
+def ver_huespedes(lista):
+    print("\n-- Lista de huespedes --")
+    if not lista:
+        print("No hay huespedes registrados")
+        return
+    for h in lista:
+        print(f"ID: {h['id']} | {h['nombre']} | Hab: {h['habitacion']} | {h['tipo']} | {h['dias']} dias | {h['estado']}")
+
+def buscar(lista):
+    print("\n-- Buscar huesped --")
+    termino = input("ID o nombre: ").strip()
+
+    if termino.isdigit():
+        resultados = [h for h in lista if h["id"] == int(termino)]
+    else:
+        resultados = [h for h in lista if termino.lower() in h["nombre"].lower()]
+
+    if not resultados:
+        print("No se encontro nada")
+        return
+
+    for h in resultados:
+        print(f"\nID: {h['id']}")
+        print(f"Nombre: {h['nombre']}")
+        print(f"Edad: {h['edad']}")
+        print(f"Habitacion: {h['habitacion']}")
+        print(f"Tipo: {h['tipo']}")
+        print(f"Dias: {h['dias']}")
+        print(f"Estado: {h['estado']}")
+        print(f"quejas: {h['quejas']}")
+
+def actualizar(lista):
+    print("\n-- Actualizar huesped --")
+    try:
+        id_buscar = int(input("ID del huesped: "))
+    except:
+        print("ID no valido")
+        return
+
+    huesped = next((h for h in lista if h["id"] == id_buscar), None)
+    if not huesped:
+        print("No existe ese huesped")
+        return
+
+    print(f"Editando a {huesped['nombre']} (enter para no cambiar)")
+
+    nombre = input(f"Nombre [{huesped['nombre']}]: ").strip()
+    if nombre:
+        huesped["nombre"] = nombre
+
+    edad = input(f"Edad [{huesped['edad']}]: ").strip()
+    if edad:
+        try:
+            huesped["edad"] = int(edad)
+        except:
+            print("Edad no valida, se dejo igual")
+
+    dias = input(f"Dias [{huesped['dias']}]: ").strip()
+    if dias:
+        try:
+            huesped["dias"] = int(dias)
+        except:
+            print("Dias no validos, se dejaron igual")
+
+    cambiar = input(f"Estado actual: {huesped['estado']} -- Cambiar? (s/n): ").strip().lower()
+    if cambiar == "s":
+        huesped["estado"] = "inactivo" if huesped["estado"] == "activo" else "activo"
+
+    guardar(lista)
+    exportar_csv(lista)
+    print("Huesped actualizado")
+
+def eliminar(lista):
+    print("\n-- Eliminar huesped --")
+    try:
+        id_eliminar = int(input("ID del huesped: "))
+    except:
+        print("ID no valido")
+        return
+
+    huesped = next((h for h in lista if h["id"] == id_eliminar), None)
+    if not huesped:
+        print("No existe ese huesped")
+        return
+
+    confirmar = input(f"Seguro que quieres eliminar a {huesped['nombre']}? (s/n): ").strip().lower()
+    if confirmar == "s":
+        lista.remove(huesped)
+        guardar(lista)
+        exportar_csv(lista)
+        print("Huesped eliminado")
+    else:
+        print("Cancelado")
+
+def menu():
+    print("\n===============================")
+    print("     Hotel Royal - Sistema")
+    print("===============================")
+    print("1. Registrar huesped")
+    print("2. Ver huespedes")
+    print("3. Buscar huesped")
+    print("4. Actualizar huesped")
+    print("5. Eliminar huesped")
+    print("6. Salir")
+    print("===============================")
+
+huespedes = cargar()
+
+while True:
+    menu()
+    opcion = input("Opcion: ").strip()
+
+    if opcion == "1":
+        nuevo_huesped(huespedes)
+    elif opcion == "2":
+        ver_huespedes(huespedes)
+    elif opcion == "3":
+        buscar(huespedes)
+    elif opcion == "4":
+        actualizar(huespedes)
+    elif opcion == "5":
+        eliminar(huespedes)
+    elif opcion == "6":
+        print("Hasta luego!")
+        break
+    else:
+        print("Opcion no valida")
+
+    input("\nEnter para continuar...")
+    
+

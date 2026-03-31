@@ -61,5 +61,14 @@
     "tipo": "estandar",
     "dias": 2,
     "estado": "activo"
+  },
+  {
+    "id": 8,
+    "nombre": "carlos andres",
+    "edad": 59,
+    "habitacion": 64,
+    "tipo": "suite",
+    "dias": 6,
+    "estado": "activo"
   }
 ]
